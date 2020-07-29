@@ -5,7 +5,7 @@ class Index
 {
     public function index()
     {
-        return '1234';
+        return '123';
     }
 
     public function hello($name = 'ThinkPHP5')
