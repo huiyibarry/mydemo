@@ -1,11 +1,12 @@
 <?php
 namespace app\index\controller;
+use think\Controller;
 
-class Index
+class Index extends Controller
 {
     public function index()
     {
-        return '123';
+       return $this->fetch();
     }
 
     public function hello($name = 'ThinkPHP5')
