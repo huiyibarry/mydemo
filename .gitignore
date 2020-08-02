@@ -1,9 +1,0 @@
-/.idea
-/.vscode
-/vendor
-*.log
-thinkphp
-.env
-.DS_Store
-/build.php
-/config/database.php
