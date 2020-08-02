@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    {include file="public:header" /}
+</head>
+
+<body>
+    <div class="x-nav">
+        <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a><cite>{$title}</cite></a>
+        </span>
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+            onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+        </a>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red">*</span>网站名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name" required="" lay-verify="required" autocomplete="off"
+                            class="layui-input"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="path" class="layui-form-label">
+                        <span class="x-red">*</span>系统路径</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="path" name="path" required="" lay-verify="required" autocomplete="off"
+                            class="layui-input"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="oid" class="layui-form-label">排序</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="oid" name="oid" value="0" required="" lay-verify="required"
+                            autocomplete="off" class="layui-input"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">网站关闭</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="status" value="1" title="开启" checked="">
+                        <input type="radio" name="status" value="2" title="关闭">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label"></label>
+                    <button class="layui-btn" lay-filter="add" lay-submit="">增加</button></div>
+            </form>
+        </div>
+    </div>
+    <script>
+        layui.use(['form', 'layer'],
+            function () {
+                var form = layui.form,
+                    layer = layui.layer;
+                //监听提交
+                form.on('submit(add)',
+                    function (data) {
+                        console.log(data);
+                        $.ajax({
+                            url: '{:url("doadd")}',
+                            type: "POST",
+                            dataType: "json",
+                            data: data.field,
+                            success: function (res) {
+                                if (res.code == 1) {
+                                    //发异步，把数据提交给php
+                                    layer.alert("增加成功", { icon: 6 },
+                                        function () {
+                                            location.reload()
+                                        });
+                                } else {
+                                    layer.msg(res.msg);
+                                }
+                            }, error: function (e) {
+                                console.log(e);
+                            }
+                        })
+                        return false;
+                    });
+
+            });</script>
+
+</body>
+
+</html>
