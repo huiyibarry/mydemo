@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        {include file="public:header" /}
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                  <div class="layui-form-item">
+                      <label for="username" class="layui-form-label">
+                          <span class="x-red">*</span>升数
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="oil_num" name="oil_num" required="" lay-verify="required"
+                          autocomplete="off" class="layui-input">
+                      </div>                     
+                  </div>                 
+
+                  <div class="layui-form-item">
+                      <label class="layui-form-label"><span class="x-red">*</span>里程数</label>
+                      <div class="layui-input-inline">
+                        <input type="text" id="mileage" name="mileage" required="" lay-verify="required"
+                        autocomplete="off" class="layui-input">
+                    </div>       
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="L_pass" class="layui-form-label">
+                          <span class="x-red">*</span>金额
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="money" name="money" required="" lay-verify="pass"
+                          autocomplete="off" class="layui-input">
+                      </div>                      
+                  </div>
+                  <div class="layui-form-item">
+                    <label for="L_pass" class="layui-form-label">
+                        <span class="x-red">*</span>加油时间
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="oil_time" name="oil_time" required="" lay-verify="pass"
+                        autocomplete="off" class="layui-input">
+                    </div>                      
+                </div>
+                  <div class="layui-form-item">
+                    <label for="L_pass" class="layui-form-label">
+                        <span class="x-red">*</span>加油前可跑的公里数
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="mileage_oil_old" name="mileage_oil_old" required="" lay-verify="pass"
+                        autocomplete="off" class="layui-input">
+                    </div>                      
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_pass" class="layui-form-label">
+                        <span class="x-red">*</span>加油后可跑的公里数
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="mileage_oil_new" name="mileage_oil_new" required="" lay-verify="pass"
+                        autocomplete="off" class="layui-input">
+                    </div>                      
+                </div>
+                
+                  <div class="layui-form-item">
+                      <label for="L_repass" class="layui-form-label">
+                      </label>
+                      <button  class="layui-btn" lay-filter="add" lay-submit="">
+                          增加
+                      </button>
+                  </div>
+              </form>
+            </div>
+        </div>
+        <script>
+        layui.use(['form', 'layer','laydate'],
+            function() {
+                var form = layui.form,
+                laydate = layui.laydate,
+                layer = layui.layer;
+                laydate.render({
+                    elem: '#oil_time' //指定元素
+                });
+                //监听提交
+                form.on('submit(add)',
+                function(data) {
+                    console.log(data);
+                    $.ajax({
+                        url:'{:url("add")}',
+                        type:"POST",
+                        dataType:"json",
+                        data:data.field,
+                        success:function(res){
+                            if(res.code==1){
+                                //发异步，把数据提交给php
+                                layer.alert("增加成功", {icon: 6 },
+                                function() {
+                                    //关闭当前frame
+                                    xadmin.close();
+
+                                    // 可以对父窗口进行刷新 
+                                    xadmin.father_reload();
+                                });
+                            }else{
+                                layer.msg(res.msg);
+                            }
+                        },error:function(e){
+                            console.log(e);
+                        }
+                    })
+                    return false;
+                });
+
+            });</script>
+       
+    </body>
+
+</html>

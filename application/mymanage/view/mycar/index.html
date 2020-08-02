@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        {include file="public:header" /}
+    </head>
+    <body>
+        <div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a><cite>{$title}</cite></a>
+          </span>
+          <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">                            
+                            <button class="layui-btn" onclick="xadmin.open('添加汽车加油记录','{:url('add')}',600,600)"><i class="layui-icon"></i>添加</button>
+                        </div>
+                       <table id="demo" lay-filter="demo"></table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </body>
+    <script id="barDemo" type="text/html" >
+         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">修改</a>
+         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+    <script>
+      layui.use(['form','table'], function(){
+        var form = layui.form;
+        var table=layui.table;
+    var tableInit=    table.render({
+            elem:"#demo",
+            url:'{:url("get_list")}',
+            page:true,
+            limit:10,
+            cols:[[
+            {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+            ,{field: 'oil_num', title: '加油升数', width:100}
+            ,{field: 'mileage', title: '里程数', width:100}
+            ,{field: 'money', title: '加油金额', width:100}
+            ,{field: 'mileage_oil_old', title: '加油前显示可以跑的公里数', width:200}
+            ,{field: 'mileage_oil_new', title: '加油后可跑的公里数', width:200}
+            ,{field: 'oil_time', title: '加油时间'}
+            ,{field: 'right', title:'操作', toolbar: '#barDemo', align:'center'}
+            ]]
+        })
+        table.on('tool(demo)',function(obj){
+            var id=obj.data.id;
+            if(obj.event=='del'){
+                layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
+                        $.post('{:url("admin_del")}',{id:id},function(res){
+                        if(res.code==1){
+                            layer.msg(res.msg, {icon: 1});
+                            obj.del();
+                        }else{
+                            layer.msg(res.msg, {icon: 2});
+                            return false;
+                        }
+                    },'json')
+                    layer.close(index);
+                });
+
+            }else if(obj.event=='edit'){
+                xadmin.open('管理员修改','{:url("edit")}&id='+id,600,400)
+            }
+        })
+        form.on('submit(sreach)', function(data){           
+            table.reload('demo', {
+                url:'{:url("get_list")}'
+                ,where: data.field //设定异步数据接口的额外参数
+            });
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+      });
+ </script>
+
+</html>
