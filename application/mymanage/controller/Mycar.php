@@ -27,6 +27,35 @@ class Mycar extends Base{
         }
     }
 
+    public function edit(){
+        if($this->request->isPost()){
+            $param = $this->request->param();
+            $id = $param['id'];
+            unset($param['id']);
+            $res = Db::name('mycar')->where('id',$id)->update($param);
+            if($res){
+                $this->success("修改成功");
+            }else{
+                $this->error("修改失败");
+            }
+        }else{
+            $id=Request::param('id');
+            $info=Db::name('mycar')->find($id);
+            return view('',['title'=>'汽车加油记录修改','info'=>$info]);
+        }
+       
+    }
+
+    public function del(){
+        $id=Request::param('id');
+        $res = Db::name('mycar')->where('id',$id)->delete();
+        if($res){
+            $this->success("删除成功");
+        }else{
+            $this->error("删除失败");
+        }
+    }
+
     public function get_list(){
         $param = Request::param();
         $rows = empty($param['limit'])?10:$param['limit'];

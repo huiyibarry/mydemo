@@ -54,7 +54,7 @@
             var id=obj.data.id;
             if(obj.event=='del'){
                 layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
-                        $.post('{:url("admin_del")}',{id:id},function(res){
+                        $.post('{:url("del")}',{id:id},function(res){
                         if(res.code==1){
                             layer.msg(res.msg, {icon: 1});
                             obj.del();
@@ -67,7 +67,7 @@
                 });
 
             }else if(obj.event=='edit'){
-                xadmin.open('管理员修改','{:url("edit")}&id='+id,600,400)
+                xadmin.open('加油记录修改','{:url("edit")}&id='+id,600,600)
             }
         })
         form.on('submit(sreach)', function(data){           
