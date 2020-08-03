@@ -75,7 +75,8 @@ function GetIpLookup($ip=''){
 		);
 		$context  = stream_context_create($opts);
         $reg = @file_get_contents($url,false,$context);
-        if($reg!=null || $reg!==false){
+        if($reg!=null || $reg!==false){            
+            $reg = json_decode($reg,true);
             $city=$reg['data'][0];
             return $city['location'];
         }else{
