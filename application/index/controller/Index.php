@@ -1,7 +1,7 @@
 <?php
 namespace app\index\controller;
 use think\Controller;
-
+use app\common\wechat\Api;
 class Index extends Controller
 {
     public function index()
@@ -11,6 +11,8 @@ class Index extends Controller
 
     public function hello($name = 'ThinkPHP5')
     {
-        return 'hello,' . $name;
+        $api = new Api();
+        $html = $api->qrcode_img();
+        return $html;
     }
 }
